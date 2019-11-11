@@ -31,9 +31,6 @@ class SignatureService
             'purpose' => $request->purpose,
         ]);
 
-
-        
-
         if (!$newUser) {
 
             DB::rollback();

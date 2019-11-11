@@ -37,7 +37,7 @@ class SignatureController extends Controller
            
             $validateRequests = $this->validate($request, [
                 'name' => 'required',
-                'email' => 'nullable|email|unique:users',
+                'email' => 'nullable',
                 'phone_number' => 'required',
                 'purpose' => 'required',
                 'address' => 'required',
