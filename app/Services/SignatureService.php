@@ -11,7 +11,7 @@ class SignatureService
 
     public function allGuest()
     {
-        $guests = User::with('signature')->latest()
+        $guests = User::latest()
         ->paginate(15);
 
         return $guests;
