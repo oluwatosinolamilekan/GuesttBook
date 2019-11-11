@@ -15,11 +15,16 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-    $router->get('signatures','SignatureController@allGuest');
-    $router->post('create/signatures','SignatureController@createVisitor');
-    $router->get('signature/{id}','SignatureController@showGuest');
-    $router->get('signature/signout','SignatureController@signOutGuest');
-    $router->post('sigin','SignatureController@signin');
-    $router->get('signature/signoutwithid','SignatureController@signOutWithId');
+$router->group(['prefix' => 'signature/'], function () use ($router) {
+	$router->get('','SignatureController@allGuest');
+	$router->post('/create','SignatureController@createVisitor');
+	$router->get('{id}','SignatureController@showGuest');
+	// $router->get('signout','SignatureController@signOutGuest');
+	$router->post('sigin','SignatureController@signin');
+	// $router->get('signoutwithid','SignatureController@signOutWithId');
+    $router->post('edit/{id}','SignatureController@editGuest');
+	$router->post('delete/{id}','SignatureController@deleteGuest');
+});
+
 
 

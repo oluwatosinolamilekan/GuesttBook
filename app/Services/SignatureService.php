@@ -11,7 +11,7 @@ class SignatureService
 
     public function allGuest()
     {
-        $guests = User::latest()->get();
+        $guests = User::with('signature')->latest()->paginate(15);
 
         return $guests;
     }
@@ -124,6 +124,43 @@ class SignatureService
                 return $query;
             }
         
+        }
+    }
+
+    public function editGuest($request,$id)
+    {
+        DB::beginTransaction();
+        $findGuest = User::where('id',$id)->first();
+        $findGuest->name = $request->name;
+        $findGuest->address = $request->address;
+        $findGuest->phone_number = $request->phone_number;
+        $findGuest->email = $request->email;
+        $findGuest->save();
+
+        $body = Signature::create([
+            'body' => $request->body,
+            'user_id' => $findGuest->id,
+        ]);
+
+        if ($findGuest || $body) {
+            DB::commit();
+            return $findGuest;
+        }
+        
+    }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        $findGuest = User::find($id)->signature()->delete();
+
+        if (!$findGuest) {
+            DB::rollback();
+            return false;
+          }else {
+            DB::commit();
+            return $findGuest;
+
         }
     }
 }

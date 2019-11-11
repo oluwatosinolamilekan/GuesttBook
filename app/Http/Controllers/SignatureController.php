@@ -24,7 +24,7 @@ class SignatureController extends Controller
         $response = [
             'code'=>200,
             'success' => true,
-            'message' => 'Guest was succesfully Created',
+            'message' => 'All Guest',
             'data'    => $results,
         ];
 
@@ -176,6 +176,68 @@ class SignatureController extends Controller
             
         } catch (\Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+    public function editGuest(Request $request, $id)
+    {
+        try {
+
+            $validateRequest = $this->validate($request, [
+                'name' => 'required',
+                'email' => 'nullable|email|unique:users',
+                'phone_number' => 'nullable',
+                'body' => 'required',
+                'address' => 'required',
+
+            ]);
+
+            if ($validateRequest) {
+
+                $guest = $this->signature->editGuest($request,$id);
+
+                if($guest){
+                     $response = [
+                        'code' => 200,
+                        'success' => true,
+                        'message' => 'Guest Details succesfully Edited',
+                        'data'    => $guest,
+                    ];
+                    return response()->json($response);
+                }
+            }
+           
+            
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+    public function deleteGuest($id)
+    {
+        try {
+            
+            $guest = $this->signature->delete($id);
+            if ($guest) {
+                $response = [
+                        'code' => 200,
+                        'success' => true,
+                        'message' => 'Guest has been deleted',
+                        'data'    => $guest,
+                    ];
+            }else{
+                $response = [
+                        'code' => 404,
+                        'success' => false,
+                        'message' => 'Guest not Found',
+                        'data'    => null,
+                    ];
+            }
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+            
         }
     }
 
