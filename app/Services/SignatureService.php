@@ -11,7 +11,18 @@ class SignatureService
 
     public function allGuest()
     {
-        $guests = User::with('signature')->latest()->paginate(15);
+        $guests = User::latest()
+        ->join('signatures','users.id', '=', 'signatures.user_id')
+        ->select([
+            'users.id',
+            'name',
+            'address',
+            'phone_number',
+            'email',
+            'users.created_at',
+            'signatures.body',
+        ])->
+        paginate(15);
 
         return $guests;
     }
