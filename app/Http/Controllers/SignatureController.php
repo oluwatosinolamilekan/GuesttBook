@@ -39,7 +39,7 @@ class SignatureController extends Controller
                 'name' => 'required',
                 'email' => 'nullable|email|unique:users',
                 'phone_number' => 'required',
-                'body' => 'required',
+                'purpose' => 'required',
                 'address' => 'required',
 
             ]);
@@ -187,7 +187,7 @@ class SignatureController extends Controller
                 'name' => 'required',
                 'email' => 'nullable|email|unique:users',
                 'phone_number' => 'nullable',
-                'body' => 'required',
+                'purpose' => 'required',
                 'address' => 'required',
 
             ]);

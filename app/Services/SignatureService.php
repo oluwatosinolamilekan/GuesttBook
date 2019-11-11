@@ -11,18 +11,8 @@ class SignatureService
 
     public function allGuest()
     {
-        $guests = User::latest()
-        ->join('signatures','users.id', '=', 'signatures.user_id')
-        ->select([
-            'users.id',
-            'name',
-            'address',
-            'phone_number',
-            'email',
-            'users.created_at',
-            'signatures.body',
-        ])->
-        paginate(15);
+        $guests = User::with('signature')->latest()
+        ->paginate(15);
 
         return $guests;
     }
@@ -38,16 +28,13 @@ class SignatureService
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'address' => $request->address,
-            'code' => rand(111,999),
+            'purpose' => $request->purpose,
         ]);
 
 
-        $newGuest = Signature::create([
-            'user_id' => $newUser->id,
-            'body' => $request->body,
-        ]);
+        
 
-        if (!$newUser || !$newGuest) {
+        if (!$newUser) {
 
             DB::rollback();
             return false;
@@ -146,14 +133,10 @@ class SignatureService
         $findGuest->address = $request->address;
         $findGuest->phone_number = $request->phone_number;
         $findGuest->email = $request->email;
+        $findGuest->purpose = $request->purpose;
         $findGuest->save();
 
-        $body = Signature::create([
-            'body' => $request->body,
-            'user_id' => $findGuest->id,
-        ]);
-
-        if ($findGuest || $body) {
+        if ($findGuest) {
             DB::commit();
             return $findGuest;
         }

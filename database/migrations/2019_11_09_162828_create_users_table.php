@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('code')->unique()->nullable();
             $table->string('address')->nullable();
+            $table->string('purpose');
             $table->timestamps();
         });
     }
