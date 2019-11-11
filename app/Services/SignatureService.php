@@ -12,7 +12,7 @@ class SignatureService
     public function allGuest()
     {
         $guests = User::latest()
-        ->paginate(15);
+        ->get();
 
         return $guests;
     }
