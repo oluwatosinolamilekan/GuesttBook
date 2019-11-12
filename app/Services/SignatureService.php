@@ -46,7 +46,7 @@ class SignatureService
 
     public function showGuest($id)
     {
-        $findGuest = Signature::find($id);
+        $findGuest = User::find($id);
 
         return $findGuest;
     }
@@ -143,15 +143,10 @@ class SignatureService
     public function delete($id)
     {
         DB::beginTransaction();
-        $findGuest = User::find($id)->signature()->delete();
-
-        if (!$findGuest) {
-            DB::rollback();
-            return false;
-          }else {
+        $findGuest = User::find($id)->delete();
+        if ($findGuest) {
             DB::commit();
             return $findGuest;
-
         }
     }
 }

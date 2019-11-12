@@ -181,17 +181,31 @@ class SignatureController extends Controller
 
     public function editGuest(Request $request, $id)
     {
-        try {
+        // try {
 
-            $validateRequest = $this->validate($request, [
+            // $validateRequest = $this->validate($request, [
+            //     'name' => 'required',
+            //     'email' => 'nullable',
+            //     'phone_number' => 'nullable',
+            //     'purpose' => 'required',
+            //     'address' => 'required',
+            // ]);
+
+        $validateRequest = \Validator::make($request->all(), [
                 'name' => 'required',
-                'email' => 'nullable|email|unique:users',
+                'email' => 'nullable',
                 'phone_number' => 'nullable',
                 'purpose' => 'required',
                 'address' => 'required',
-
             ]);
-
+            if ($validateRequest->fails()) {
+                // return $this->validationErrors($validateRequest->getMessageBag()->all());
+                return response()->json([
+                    'message' => $validateRequest->getMessageBag()->all(),
+                    'data' => null,
+                ],404);
+            }
+            // dd($request->all());
             if ($validateRequest) {
 
                 $guest = $this->signature->editGuest($request,$id);
@@ -205,12 +219,20 @@ class SignatureController extends Controller
                     ];
                     return response()->json($response);
                 }
+            }else{
+                return response()->json([
+                    'message' => 'Failed',
+                    'data' => null,
+                ],404);
             }
            
             
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //             'message' => $e->getMessage(),
+        //             'data' => null,
+        //         ],404);
+        // }
     }
 
 

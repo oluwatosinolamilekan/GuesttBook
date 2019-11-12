@@ -23,8 +23,8 @@ $router->group(['prefix' => 'signature/'], function () use ($router) {
 	$router->post('sigin','SignatureController@signin');
 	// $router->get('signoutwithid','SignatureController@signOutWithId');
     $router->post('edit/{id}','SignatureController@editGuest');
-	$router->post('delete/{id}','SignatureController@deleteGuest');
-});
+	$router->get('delete/{id}','SignatureController@deleteGuest');
+});  
 
 
 
