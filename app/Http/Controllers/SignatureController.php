@@ -248,17 +248,15 @@ class SignatureController extends Controller
                         'message' => 'Guest has been deleted',
                         'data'    => $guest,
                     ];
-            }else{
-                $response = [
-                        'code' => 404,
-                        'success' => false,
-                        'message' => 'Guest not Found',
-                        'data'    => null,
-                    ];
             }
             return response()->json($response);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return $response = [
+                        'code' => 404,
+                        'success' => false,
+                        'message' => $e->getMessage(),
+                        'data'    => null,
+                ];
             
         }
     }
